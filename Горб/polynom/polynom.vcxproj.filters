@@ -21,7 +21,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="list.h">
+    <ClInclude Include="tlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

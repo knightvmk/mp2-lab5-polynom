@@ -1,5 +1,5 @@
-#ifndef __TNODE_H__
-#define __TNODE_H__
+#ifndef __TLIST_H__
+#define __TLIST_H__
 
 template class<type>
 class TNode
