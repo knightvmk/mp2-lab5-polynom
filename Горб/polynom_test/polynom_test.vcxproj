@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_test.cpp" />
-    <ClCompile Include="tnode_test.cpp" />
+    <ClCompile Include="tlist_test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45D64617-0E96-4D42-A0A1-AD6EC47E3DD0}</ProjectGuid>
