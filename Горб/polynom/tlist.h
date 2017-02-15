@@ -6,8 +6,8 @@
 template <type>
 struct TNode
 {
-	type value;
-	TNode *pFirst;
+	type val;
+	TNode *pNext;
 	TNode *pPrev;
 };
 
@@ -17,100 +17,193 @@ class TList
 {
 private:
 	TNode *pFirst;
-	short int count;
+	TNode *pLast;
+	short int len;
+	short int pos;
 public:
-	//-----iter-------//
-	class iterator
-	{
-	private: //none
-	public:
-		iterator(TNode *p) { iter_p(p); } //BIG question. Really work??
-		bool operator==(const iterator &ins) const
-		{
-			if (this = &ins) return true;
-			return (iter_p == ins.iter_p);
-		}
-		bool operator!=(const iterator &ins) const
-		{
-			return !operator==(ins);
-		}
-		void operator++()
-		{
-			if (iter_p)
-			{
-				iter_p = iter_p->pNext;
-			}
-			else throw ('Stop: End of list');
-		}
-		void operator--()
-		{
-			if (iter_p)
-			{
-				iter_p = iter_p->pPrev;
-			}
-		}
-	};
-	//-----iter-------//
+	TList();
+	TList(int _len);
+	void GetLen() { return len; };
+	void GetPos() { return pos; };
+	void SetPos(int _pos);
+	void GoNext();
+	void GoBack();
+	void InsFirst(const type &_val);
+	void InsLast(const type &_val);
+	void Ins(int _pos, const type &_val);
+	void DelFirst();
+	void DelLast();
+	void SetVal(const int _pos,const type _val);
+	type GetVal(const int _pos);
+	void DelCell(int _pos);
 };
 
 template <class type>
 TList<type>::TList()
 {
-	pFirst(nullptr);
-	pLast(nullptr);
-	count(0);
+	pFirst = new TNode;
+	pLast = new TNode;
+	pLast = pFirst;
+	pFirst->pPrev = pFirst->pNext = pFirst;
+	count(1);
+	pos = 0;
+}
+
+template<class type>
+TList<type>::TList(int _len)
+{
+	pFirst = new TNode;
+	pLast = new TNode;
+	pLast->pNext = pFirst;
+	while (len!=_len)
+		do
+		{
+			//
+		}
 };
 
 template <class type>
-void TList<type>::InsFirst(const type &_value)
+void TList<type>::InsFirst(const type &_val)
 {
-	TNode *p = new TNode;   /* watch down */		
-	p->value = _value;     /* attention -> class _value must have override of = */
-	if(pFirst == nullptr) /*  watch up  */
-	{
-		p->pNext = p->pPrev = nullptr;
-	}
-	else
-	{
-		pPrev = nullptr;
-		p->pLast = nullptr;
-		p->pNext = pFirst;
-		pFirst = p;
-	}
-	count++;
+	SetPos(0);
+	TNode *p = new TNode;
+	//if (pFirst == nullptr) p = pFirst = pLast;
+	p = pFirst;
+	pFirst->pNext = p;
+	//pFirst->pPrev = pLast;
+	p->pPrev = pFirst;
+	pFirst->val = _val;
+	len++;
 };
 
 template <class type>
-void TList<type>::InsLast(const type &_value)
+void TList<type>::InsLast(const type &_val)
 {
-	TNode *p = new TNode;   /* watch down */
-	p->value = _value;     /* attention -> class _value must have override of = */
-	p-> pNext = nullptr;
-	p->pPrev = pLast;
-	pLast = p;
-	if (pFirst == nullptr) pFirst = p;
-	count++;
+	
+	SetPos(len - 1);
+	TNode *p = new TNode;
+	//if (pFirst == nullptr) p = pFirst = pLast;
+	p = pLast;
+	pLast->pPrev = p;
+	p->pNext = pLast;
+	pLast->val = _val;
+	len++;
+};
+
+template<class type>
+void TList<type>::SetPos(int _pos)
+{
+	while (pos < _pos) GoNext();
+	while (pos > _pos) GoBack();
+	else return;
+	if(pos!=_pos) throw ('HALT, not work method!')
+};
+
+template<class type>
+void TList<type>::GoNext()
+{
+	/**p = new TNode;
+	p = */pFirst=pFirst->pNext;
+	if (pos + 1 == len) pos = 0;
+	else ++pos;
+	//delete p;
+};
+
+template <class type>
+void TList<type>::GoBack()
+{
+	/**p = new TNode;
+	p=*/pFirst=pFirst->pPrev;
+	if (pos - 1 < 0) pos = len - 1;
+	else --pos;
+	//delete p;
+};
+
+template <class type>
+void TList<type>::Ins(int _pos, const type &_val)
+{
+	if (_pos == 0)
+	{ 
+		InsFirst(_val); 
+		return; 
+	}
+	if (_pos == len - 1)
+	{
+		InsLast(_val);
+		return;
+	}
+	SetPos(_pos);
+	TNode *p = new TNode;
+	p->pNext = pFirst;
+	pFirst->pPrev = p;
+	GoBack();
+	p->pPrev = pFirst;
+	pFirst->pNext = p;
+	p->val = _val;
+	len++;
 };
 
 template <class type>
 void TList<type>::DelFirst()
 {
 	if (pFirst == nullptr) return;
-	TNode *p = pFirst->pNext;
+	TNode *p = new TNode;
+	p = pFirst -> pNext;
 	delete pFirst;
-	count--;
-	pFirst = p; //not ended
+	pFirst = p;
+	--len;
+	SetPos(len - 1);
 };
 
 
 template <class type>
 void TList<type>::DelLast()
 {
-	if (pFirst == nullptr) return;
-	//
-	pLast = pPrev = nullptr; //not ended
+	if (pLast == nullptr) return;
+	TNode *p = new TNode;
+	p = pLast -> pPrev;
+	delete pLast;
+	pLast = p;
+	len--;
+	SetPos(len - 1);
 };
 
+template<class type>
+void TList<type>::SetVal(const int _pos, const type _val)
+{
+	SetPos(_pos);
+	pFirst->val = _val;
+};
 
+template<class type>
+type TList<type>::GetVal(const int _pos)
+{
+	SetPos(_pos);
+	return pFirst->val;
+};
+
+template<class type>
+void TList<type>::DelCell(const int _pos)
+{
+	if (_pos == 0)
+	{
+		DelFirst(_val);
+		return;
+	}
+	if (_pos == len - 1)
+	{
+		DelLast(_val);
+		return;
+	}
+	SetPos(_pos);
+	TNode *prev = new TNode;
+	TNode *next = new TNode;
+	prev = pFirst->pPrev;
+	prev->pNext = pFirst->pNext;
+	next = pFirst->pNext;
+	next->pPrev = prev;
+	delete pFirst;
+	len--;	
+};
 
 #endif
