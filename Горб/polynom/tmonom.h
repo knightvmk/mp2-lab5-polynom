@@ -17,10 +17,10 @@ public:
 	void SetConsta(const int _c);
 	void SetIndex(const int _i);
 	TMonom& operator=(const TMonom &_enter);
-	TMonom& operator+(const TMonom &_enter);
-	TMonom& operator-(const TMonom &_enter);
-	TMonom& operator*(const TMonom &_enter);
-	TMonom& operator/(const TMonom &_enter); //to hard...
+	TMonom operator+(const TMonom &_enter);
+	TMonom operator-(const TMonom &_enter);
+	TMonom operator*(const TMonom &_enter);
+	TMonom operator/(const TMonom &_enter); //to hard...
 	bool operator==(const TMonom &_enter) const;
 
 };

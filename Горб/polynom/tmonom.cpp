@@ -44,51 +44,60 @@ TMonom& TMonom::operator=(const TMonom & _enter)
 	return *this;
 };
 
-TMonom& TMonom::operator+(const TMonom & _enter)
+TMonom TMonom::operator+(const TMonom & _enter)
 {
 	if (index != _enter.index)
 	{
 		throw ("Forbidden to add different degree monomials!");
+		return *this;
 	}
 	else
 	{
-		consta += _enter.consta;
+		TMonom res;
+		res.consta = consta + _enter.consta;
+		res.index = index;
+		return res;
 	}
-	return *this;
 };
 
-TMonom& TMonom::operator-(const TMonom & _enter)
+TMonom TMonom::operator-(const TMonom & _enter)
 {
+	
 	if (index != _enter.index)
 	{
 		throw ("Forbidden to substract different degree monomials!");
+		return *this;
 	}
 	else
 	{
-		consta -= _enter.consta;
+		TMonom res;
+		res.consta = consta-_enter.consta;
+		res.index = index;
+		return res;
 	}
-	return *this;
 }
-TMonom& TMonom::operator*(const TMonom & _enter)
+TMonom TMonom::operator*(const TMonom & _enter)
 {
-	consta *= _enter.consta;
-	index += _enter.index;
-	return *this;
+	TMonom res;
+	res.consta = consta * _enter.consta;
+	res.index= index + _enter.index;
+	return res;
 };
 
-TMonom& TMonom::operator/(const TMonom & _enter)
+TMonom TMonom::operator/(const TMonom & _enter)
 {
 	if (index -= _enter.index < 0)
 	{
 		throw ("It's to hard today");
-		
+		return *this;
 	}
 	else
 	{
-		consta /= _enter.consta;
-		index -= _enter.index;
+		TMonom res;
+		res.consta = consta / _enter.consta;
+		res.index = index - _enter.index;
+		return res;
 	}
-	return *this;
 };
 
 bool TMonom::operator==(const TMonom & _enter) const
