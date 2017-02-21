@@ -137,6 +137,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="tmonom.cpp" />
+    <ClCompile Include="tpolinom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
@@ -144,6 +146,8 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="tlist.h" />
+    <ClInclude Include="tmonom.h" />
+    <ClInclude Include="tpolinom.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="polynom.rc" />
