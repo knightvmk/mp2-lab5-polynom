@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\polynom\tmonom.cpp" />
+    <ClCompile Include="..\polynom\tpolinom.cpp" />
     <ClCompile Include="main_test.cpp" />
     <ClCompile Include="tlist_test.cpp" />
     <ClCompile Include="tmonom_test.cpp" />

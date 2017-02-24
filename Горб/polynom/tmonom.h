@@ -1,7 +1,7 @@
 #ifndef __TMONOM_H__
 #define __TMONOM_H__
 
-#define OVER_IND 12
+#define OVER_IND 999
 
 class TMonom
 {
@@ -22,6 +22,7 @@ public:
 	TMonom operator*(const TMonom &_enter);
 	TMonom operator/(const TMonom &_enter); //to hard...
 	bool operator==(const TMonom &_enter) const;
+	bool operator!=(const TMonom &_enter) const;
 
 };
 

@@ -14,24 +14,6 @@ TEST(TList, can_return_true_len)
 	EXPECT_EQ(2, a.GetLen());
 };
 
-/*
-TEST(TList, check_value_by_ins)
-{
-	TList<int> a;
-	a.InsFirst(1);
-	a.InsFirst(2);
-	a.InsFirst(3);
-	a.InsLast(5);
-	a.Ins(2, 9);
-	int res[5];
-	res[0] = 3;
-	res[1] = 2;
-	res[2] = 9;
-	res[3] = 1;
-	res[4] = 5;
-	EXPECT_EQ(a.ToStr(), res); //only for debug time
-}*/
-
 TEST(TList, can_ins_by_pos)
 {
 	TList<int> a;
@@ -203,4 +185,20 @@ TEST(TList, check_stress_test_1)
 	a.DelFirst();
 	a.DelLast();
 	EXPECT_EQ(a.GetVal(4), 99);
+}
+
+TEST(TList, can_delete_list)
+{
+	TList<int> a;
+	a.InsFirst(1);
+	a.InsLast(2);
+	a.InsLast(3);
+	a.Delete();
+	EXPECT_EQ(a.GetLen(), 0);
+}
+
+TEST(TList, can_delete_empty_list)
+{
+	TList<int> a;
+	ASSERT_NO_THROW(a.Delete());
 }
