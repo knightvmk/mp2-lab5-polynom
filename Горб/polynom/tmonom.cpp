@@ -84,13 +84,13 @@ TMonom TMonom::operator*(const TMonom &_enter)
 	res.consta = consta * _enter.consta;
 	int a1, b1, c1, a2, b2, c2;
 	//first
-	a1 = (int)(consta / 100);
-	b1 = (int)((consta - a1 * 100) / 10);
-	c1 = consta - a1 - b1;
+	a1 = (int)(index / 100);
+	b1 = (int)((index - a1 * 100) / 10);
+	c1 = index - a1 - b1;
 	//second
-	a2 = (int)(_enter.consta / 100);
-	b2 = (int)((_enter.consta - a2 * 100) / 10);
-	c2 = _enter.consta - a2 - b2;
+	a2 = (int)(_enter.index / 100);
+	b2 = (int)((_enter.index - a2 * 100) / 10);
+	c2 = _enter.index - a2 - b2;
 	//result:
 	res.index = (a1 + a2) * 100 + (b1 + b2) * 10 + (c1 + c2);
 	if (res.index > 999)
@@ -112,13 +112,13 @@ TMonom TMonom::operator/(const TMonom &_enter)
 		res.consta = consta / _enter.consta;
 		int a1, b1, c1,a2,b2,c2;
 		//first
-		a1 = (int)(consta / 100);
-		b1 = (int)((consta - a1*100)/10);
-		c1 = consta - a1 - b1;
+		a1 = (int)(index / 100);
+		b1 = (int)((index - a1*100)/10);
+		c1 = index - a1 - b1;
 		//second
-		a2 = (int)(_enter.consta / 100);
-		b2 = (int)((_enter.consta - a2 * 100) / 10);
-		c2 = _enter.consta - a2 - b2;
+		a2 = (int)(_enter.index / 100);
+		b2 = (int)((_enter.index - a2 * 100) / 10);
+		c2 = _enter.index - a2 - b2;
 		if (a1 - a2 <0) throw("Беда1");
 		if (b1 - b2 <0) throw("Беда2");
 		if (c1 - c2 <0) throw("Беда3");
