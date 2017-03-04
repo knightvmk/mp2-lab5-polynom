@@ -1,4 +1,4 @@
-#include "tpolinom.h"
+﻿#include "tpolinom.h"
 
 //system fuctions:
 

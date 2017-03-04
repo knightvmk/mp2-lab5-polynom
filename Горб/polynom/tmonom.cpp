@@ -1,4 +1,4 @@
-#include "tmonom.h"
+Ôªø#include "tmonom.h"
 
 TMonom::TMonom()
 {
@@ -94,7 +94,7 @@ TMonom TMonom::operator*(const TMonom &_enter)
 	//result:
 	res.index = (a1 + a2) * 100 + (b1 + b2) * 10 + (c1 + c2);
 	if (res.index > 999)
-		throw("Achtung, Attention, Alert, ”‚‡„‡! Overdrive!!!"); //halt() exit() system down!
+		throw("Achtung, Attention, Alert, –£–≤–∞–≥–∞! Overdrive!!!"); //halt() exit() system down!
 	return res;
 };
 
