@@ -16,8 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "polynom_test", "..\polynom_
 		{60932AFC-7808-48B7-B3BF-F2BC151C0065} = {60932AFC-7808-48B7-B3BF-F2BC151C0065}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "polynom_console", "..\polynom_console\polynom_console.vcxproj", "{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,14 +46,6 @@ Global
 		{45D64617-0E96-4D42-A0A1-AD6EC47E3DD0}.Release|x64.Build.0 = Release|x64
 		{45D64617-0E96-4D42-A0A1-AD6EC47E3DD0}.Release|x86.ActiveCfg = Release|Win32
 		{45D64617-0E96-4D42-A0A1-AD6EC47E3DD0}.Release|x86.Build.0 = Release|Win32
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Debug|x64.ActiveCfg = Debug|x64
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Debug|x64.Build.0 = Debug|x64
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Debug|x86.ActiveCfg = Debug|Win32
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Debug|x86.Build.0 = Debug|Win32
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Release|x64.ActiveCfg = Release|x64
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Release|x64.Build.0 = Release|x64
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Release|x86.ActiveCfg = Release|Win32
-		{211045BF-83C7-4CE8-A3D6-5152DCC4A99C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

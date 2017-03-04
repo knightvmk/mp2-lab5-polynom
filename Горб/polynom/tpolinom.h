@@ -2,13 +2,11 @@
 #define __TPOLINOM_H__
 
 #include <string>
-#include <iostream>
 #include "tlist.h"
 #include "tmonom.h"
 
 #define MCON 150
 #define BIT 3
-#define MAX_MON 12
 
 using namespace std;
 
@@ -21,30 +19,22 @@ private:
 	bool IsChar(int i,const string &a);
 public:
 	TPolinom();
-	TPolinom(const TPolinom &_enter);
 	TPolinom(const string &enter);
-	short int GetLen() const { return self.GetLen(); };
-	TMonom GetVal(const int pos) const { return self.GetVal(pos); } //get copy
+	int GetLen() const { return self.GetLen() - 1; };
+	TMonom GetVal(const int pos) { return self.GetVal(pos); } //get copy
 	void SetVal(const int pos, TMonom _enter) { self.SetVal(pos, _enter); }
 	void Ins(const int pos, TMonom _enter) { self.Ins(pos, _enter); }
-	bool operator==(const TPolinom &_enter) const;
-	bool operator!=(const TPolinom &_enter) const;
-	TPolinom& operator=(const TPolinom &_enter);
+	bool operator==(TPolinom &_enter);
+	bool operator!=(TPolinom &_enter);
+	TPolinom& operator=(TPolinom _enter);
 	TPolinom& dif();
 	TPolinom& integrate();
-	void Optimize();
-	TPolinom operator+(const TPolinom &_enter);
-	TPolinom operator-(const TPolinom &_enter);
-	TPolinom operator*(const TPolinom &_enter);
-	TPolinom operator*(int _value);
-	TPolinom operator/(const TPolinom &_enter);
-	friend ostream& operator<<(ostream &out, const TPolinom &_enter);
-	string ToString() const; //all polynom to string
-	string ToString(int pos) const; //pos-monom to stirng
-	double Calculate(int _x, int _y, int _z) const;
+	TPolinom operator+(TPolinom &_enter);
+	TPolinom operator-(TPolinom &_enter);
+	TPolinom operator*(TPolinom &_enter);
+	TPolinom operator/(TPolinom &_enter);
+
 };
-
-
 
 
 #endif
