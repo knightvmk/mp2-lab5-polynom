@@ -24,9 +24,21 @@
     <ClInclude Include="tlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tmonom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tpolinom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tmonom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tpolinom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

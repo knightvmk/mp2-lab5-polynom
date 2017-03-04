@@ -1,7 +1,5 @@
 #ifndef __TLIST_H__
 #define __TLIST_H__
-#include <stdlib.h>
-#include <stdio.h>
 
 #define CH_STR 10
 
@@ -18,40 +16,59 @@ private:
 		short int pos;
 	};
 	TNode *pFirst;
-	TNode *pCurr;
+	mutable TNode *pCurr;
 	short int len;
 	void RePos(bool key);
 	void FullRePos();
-	
+	void SetPos(int _pos) const;
 public:
 	TList();
-	short int GetLen() { return len; };
-	short int GetPos() { return pos; };
-	void SetPos(int _pos);
-	void GoNext();
-	void GoBack();
-	void InsFirst(const type &_val);
-	void InsLast(const type &_val);
-	void Ins(int _pos, const type &_val);
+	~TList();
+	short int GetLen() const;
+	short int GetPos() const { return pos; };
+	void GoNext() const;
+	void GoBack() const;
+	void InsFirst(const type _val);
+	void InsLast(const type _val);
+	void Ins(int _pos, const type _val);
 	void DelFirst();
 	void DelLast();
-	void SetVal(const int _pos,const type &_val);
-	const type GetVal(const int _pos);
+	void SetVal(const int _pos,const type _val);
+	type GetVal(const int _pos) const;
 	void DelCell(int _pos);
-	int* ToStr(); //for debug, not for use
+	void Delete();
 };
 
-template<class type>
-inline int* TList<type>::ToStr()
+//system func:
+
+template <class type>
+inline void TList<type>::RePos(bool key) //Only after Insert by Pos
 {
-	int *res=new int[4];
-	SetPos(0);
-	for (register int i = 0; i < len; i++)
+
+	short int tmp = pCurr->pos; //
+	while (pCurr->pos != len) //Re Position
 	{
-		res[i] = pCurr->val;
+		if (key)	pCurr->pos++;
+		else pCurr->pos--;
 		GoNext();
-	} return res;
+	}
+	//Back to list:
+	SetPos(tmp);
+}
+
+template<class type>
+inline void TList<type>::FullRePos() //Full RePos for all list from 0 -> len-1
+{
+	register short int ind = 0;
+	pCurr = pFirst;
+	while (ind != len)
+	{
+		pCurr->pos = ind++;
+		GoNext();
+	}
 };
+
+//end of system func;
 
 template <class type>
 TList<type>::TList()
@@ -61,7 +78,40 @@ TList<type>::TList()
 };
 
 template <class type>
-void TList<type>::InsFirst(const type &_val)
+TList<type>::~TList()
+{
+	if (pFirst == nullptr)
+	{
+		delete pFirst;
+		delete pCurr;
+	}
+	else if (len == 1)
+	{
+		delete pFirst;
+	}
+	else
+	{
+		SetPos(1);
+		delete pFirst;
+		TNode *prev;
+		while (pCurr->pos != len - 1)
+		{
+			prev=pCurr;
+			GoNext();
+			delete prev;
+		}
+		delete pCurr;
+	}
+};
+
+template <class type>
+short int TList<type>::GetLen() const
+{ 
+	return len;
+};
+
+template <class type>
+void TList<type>::InsFirst(const type _val)
 {
 	if (pFirst == nullptr)
 	{
@@ -86,7 +136,7 @@ void TList<type>::InsFirst(const type &_val)
 };
 
 template <class type>
-void TList<type>::InsLast(const type &_val)
+void TList<type>::InsLast(const type _val)
 {
 	if (pFirst == nullptr)
 	{	
@@ -100,12 +150,11 @@ void TList<type>::InsLast(const type &_val)
 	p->pNext = nullptr;
 	++len;
 	pCurr->pNext = p;
-	//SetPos(len);
 	p->pPrev = pCurr;
 };
 
 template<class type>
-inline void TList<type>::SetPos(int _pos)
+inline void TList<type>::SetPos(int _pos) const 
 {
 	if (_pos<0 || _pos>len) throw ("Invalid position: out of the range");
 	if (_pos == 0)
@@ -119,7 +168,7 @@ inline void TList<type>::SetPos(int _pos)
 };
 
 template<class type>
-inline void TList<type>::GoNext()
+inline void TList<type>::GoNext() const
 {
 	if (pCurr->pNext == nullptr)
 	{
@@ -130,7 +179,7 @@ inline void TList<type>::GoNext()
 };
 
 template <class type>
-inline void TList<type>::GoBack()
+inline void TList<type>::GoBack() const
 {
 	if (pCurr->pPrev == nullptr)
 	{
@@ -141,7 +190,7 @@ inline void TList<type>::GoBack()
 };
 
 template <class type>
-void TList<type>::Ins(int _pos, const type &_val)
+void TList<type>::Ins(int _pos, const type _val)
 {
 	if (_pos < 0 || _pos > len) throw ("Bad position: out of the range!");
 	if (pFirst == nullptr) InsFirst(_val);
@@ -158,36 +207,8 @@ void TList<type>::Ins(int _pos, const type &_val)
 		prev->pNext = p;
 		p->pNext = pCurr;
 		p->pPrev = prev;
-		//pCurr = pCurr->pNext;
 		RePos(1);
 		++len;
-	}
-};
-
-template <class type>
-inline void TList<type>::RePos(bool key) //Only after Insert by Pos
-{
-
-	short int tmp = pCurr->pos; //
-	while (pCurr->pos != len) //Re Position
-	{
-		if(key)	pCurr->pos++;
-		else pCurr->pos--;
-		GoNext();
-	}
-	//Back to list:
-	SetPos(tmp);
-}
-
-template<class type>
-inline void TList<type>::FullRePos()
-{
-	register short int ind = 0;
-	pCurr = pFirst;
-	while (ind!=len)
-	{
-		pCurr->pos = ind++;
-		GoNext();
 	}
 };
 
@@ -216,7 +237,7 @@ inline void TList<type>::DelLast()
 };
 
 template<class type>
-inline void TList<type>::SetVal(const int _pos, const type &_val)
+inline void TList<type>::SetVal(const int _pos, const type _val)
 {
 	if (_pos<0 || _pos>len) throw ("Bad position: out of the range");
 	SetPos(_pos);
@@ -224,7 +245,7 @@ inline void TList<type>::SetVal(const int _pos, const type &_val)
 };
 
 template<class type>
-inline const type TList<type>::GetVal(const int _pos)
+inline type TList<type>::GetVal(const int _pos) const
 {
 	if (_pos<0 || _pos>len) throw ("Bad position: out of the range");
 	SetPos(_pos);
@@ -237,7 +258,7 @@ void TList<type>::DelCell(const int _pos)
 	if (_pos<0 || _pos>len) throw ("Bad position: out of the range");
 	if (pFirst == nullptr) return;
 	else if (_pos == 0) DelFirst();
-	else if (_pos == len) DelLast();
+	else if (_pos == len-1) DelLast();
 	else
 	{
 		SetPos(_pos);
@@ -249,6 +270,14 @@ void TList<type>::DelCell(const int _pos)
 		--len;
 		FullRePos();
 	}
+}
+
+template<class type>
+inline void TList<type>::Delete()
+{
+	::TList<type>::~TList();
+	pFirst = pCurr = nullptr;
+	len = 0;
 };
 
 #endif
