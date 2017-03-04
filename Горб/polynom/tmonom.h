@@ -1,7 +1,12 @@
 #ifndef __TMONOM_H__
 #define __TMONOM_H__
 
+#include <string>
+#include <iostream>
+
 #define OVER_IND 999
+
+using namespace std;
 
 class TMonom
 {
