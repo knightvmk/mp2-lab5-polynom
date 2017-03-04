@@ -46,12 +46,22 @@ inline bool TPolinom::IsChar(int i, const string &a)
 	else return false;
 };
 
-//end of system functions
+//end of system functions;
+
+//user methods:
 
 TPolinom::TPolinom()
 {
 	TMonom p(0,-1);
 	self.InsFirst(p);
+}
+
+TPolinom::TPolinom(const TPolinom & _enter)
+{
+	for (register int i = 0; i < _enter.GetLen(); i++)
+	{
+		self.InsLast(_enter.GetVal(i));
+	}
 };
 
 TPolinom::TPolinom(const string &enter)
@@ -118,26 +128,27 @@ TPolinom::TPolinom(const string &enter)
 				i = j;
 			}
 		ind = a * 100 + b * 10 + c;
+		a = b = c = 0;
 		TMonom p(coeff, ind);
 		self.InsLast(p);
 	}
 }
 
-bool TPolinom::operator==(TPolinom &_enter)
+bool TPolinom::operator==(const TPolinom &_enter) const
 {
-	if (GetLen() != _enter.GetLen()) return false;
+	if (self.GetLen() != _enter.GetLen()) return false;
 	for (register int i = 0; i < _enter.GetLen(); i++)
 	{
 		if (self.GetVal(i) != _enter.GetVal(i)) return false;
 	} return true;
 };
 
-bool TPolinom::operator!=(TPolinom &_enter)
+bool TPolinom::operator!=(const TPolinom &_enter) const
 {
 	return (!(*this==_enter));
 };
 
-TPolinom& TPolinom::operator=(TPolinom _enter)
+TPolinom& TPolinom::operator=(const TPolinom &_enter)
 {
 	self.Delete();
 	for (register int i = 0; i < _enter.GetLen(); i++)
@@ -153,59 +164,182 @@ TPolinom& TPolinom::dif()
 TPolinom& TPolinom::integrate()
 {
 	return *this;
+}
+
+inline void TPolinom::Optimize()
+{
+	TMonom tmp,work;
+	for (register int i = 1; i < self.GetLen(); i++)
+	{
+		work = self.GetVal(i);
+		for (register int j = i; j < self.GetLen(); j++)
+		{
+			if ((work.GetIndex() == self.GetVal(j).GetIndex()) && (i!=j))
+			{
+				self.SetVal(i, work + self.GetVal(j));
+				self.DelCell(j);
+				--j; //check again
+			}
+		}
+	}
 };
 
-TPolinom TPolinom::operator+(TPolinom &_enter)
+//overload operators:
+
+TPolinom TPolinom::operator+(const TPolinom &_enter)
 {
 	TPolinom res;
-	for (register int i = 1; i < _enter.GetLen(); i++)
+	for (register int i = 1, j=1; i < _enter.GetLen(); i++,j++)
 	{
 		if (self.GetVal(i).GetIndex() != _enter.GetVal(i).GetIndex())
 		{
-			res.Ins(i, self.GetVal(i));
-			res.Ins(i+1, _enter.GetVal(i+1));
+			res.Ins(j, _enter.GetVal(i));
+			res.Ins(j++, self.GetVal(i));
 		}
 		else
 		{
-			TMonom a = self.GetVal(i);
-			res.Ins(i, a + _enter.GetVal(i));
+			res.Ins(j, self.GetVal(i) + _enter.GetVal(i));
 		}
 	}
+	if (self.GetLen() != 2) res.Optimize();
 	return res;
 };
 
-TPolinom TPolinom::operator-(TPolinom &_enter)
+TPolinom TPolinom::operator-(const TPolinom &_enter)
 {
 	TPolinom res;
-	for (register int i = 1; i < _enter.GetLen(); i++)
+	for (register int i = 1, j = 1; i < _enter.GetLen(); i++, j++)
 	{
 		if (self.GetVal(i).GetIndex() != _enter.GetVal(i).GetIndex())
 		{
-			res.Ins(i, self.GetVal(i));
-			res.Ins(i + 1, _enter.GetVal(i + 1));
+			res.Ins(j, _enter.GetVal(i));
+			res.Ins(j++, self.GetVal(i));
 		}
 		else
 		{
-			TMonom a = self.GetVal(i);
-			res.Ins(i, a - _enter.GetVal(i));
+			res.Ins(j, self.GetVal(i) - _enter.GetVal(i));
 		}
 	}
+	if (self.GetLen() != 2) res.Optimize();
 	return res;
 };
 
-TPolinom TPolinom::operator*(TPolinom &_enter)
+TPolinom TPolinom::operator*(const TPolinom &_enter)
 {
 	TPolinom res;
-	register int k = 0;
+	register int k = 1;
 	for (register int i = 1; i < _enter.GetLen(); i++)
 	{
-		TMonom a = self.GetVal(i);
-		for (register int j = i; j < _enter.GetLen(); j++) //multiply by fountain
-			res.Ins(k++, a * _enter.GetVal(j));
+		for (register int j = 1; j < _enter.GetLen(); j++) //multiply by fountain
+			res.Ins(k++, self.GetVal(i) * _enter.GetVal(j));
 	}
+
+	if(self.GetLen()!= 2) res.Optimize();
 	return res;
 }
-TPolinom TPolinom::operator/(TPolinom &_enter)
+TPolinom TPolinom::operator*(int _value)
 {
-	return TPolinom();
+	TPolinom res(*this);
+	TMonom work;
+	register int w_const;
+	for (register int i = 1; i < res.GetLen(); i++)
+	{
+		work = res.GetVal(i);
+	    w_const = work.GetConsta();
+		work.SetConsta(w_const*_value);
+		res.SetVal(i, work);
+	}
+	return res;
 };
+
+TPolinom TPolinom::operator/(const TPolinom &_enter)
+{
+	TPolinom res;
+	register int k = 1;
+	for (register int i = 1; i < _enter.GetLen(); i++)
+	{
+		for (register int j = i; j < _enter.GetLen(); j++) //divide by fountain
+			res.Ins(k++, self.GetVal(i) / _enter.GetVal(j));
+	}
+	if (self.GetLen() != 2) res.Optimize();
+	return res;
+};
+
+string TPolinom::ToString() const
+{
+	string res;
+	TMonom work;
+	register int a, b, c, index;
+	for (register int i = 1; i < self.GetLen(); i++)
+	{
+		work = self.GetVal(i);
+		index = work.GetIndex();
+		if (i != 1 && work.GetConsta() >= 0)
+			res.push_back('+');
+		res += to_string(work.GetConsta());
+		{
+			a = (int)(index / 100);
+			b = (int)((index - a * 100) / 10);
+			c = index - a * 100 - b * 10;
+		}
+		res.push_back('x');
+		res+=(to_string(a));
+		res.push_back('y');
+		res += to_string(b);
+		res.push_back('z');
+		res+=to_string(c);
+	}
+	return res;
+};
+
+string TPolinom::ToString(int pos) const
+{
+	if (pos < 1 || pos >= self.GetLen()) throw ("Bad allocate to monom");
+	string res;
+	TMonom work;
+	register int a, b, c, index;
+	work = self.GetVal(pos);
+	index = work.GetIndex();
+	res += to_string(work.GetConsta());
+	{
+		a = (int)(index / 100);
+		b = (int)((index - a * 100) / 10);
+		c = index - a * 100 - b * 10;
+	}
+	res.push_back('x');
+	res += (to_string(a));
+	res.push_back('y');
+	res += to_string(b);
+	res.push_back('z');
+	res += to_string(c);
+	return res;
+}
+
+double TPolinom::Calculate(int _x, int _y, int _z) const
+{
+	double res=0;
+	TMonom work;
+	register int a, b, c, index, consta;
+	for (register int i = 1; i < self.GetLen(); i++)
+	{
+		work = self.GetVal(i);
+		index = work.GetIndex();
+		consta = work.GetConsta();
+		{
+			a = (int)(index / 100);
+			b = (int)((index - a * 100) / 10);
+			c = index - a * 100 - b * 10;
+		}
+		res += consta*(powl(_x,a)*powl(_y,b)*powl(_z,c));
+	}
+	return res;
+};
+
+//end of user methods;
+
+ostream & operator<<(ostream &out, const TPolinom &_enter)
+{
+	for (register int i = 1; i < _enter.GetLen(); i++)
+		out << _enter.ToString(i) <<' ';
+	return out;
+}

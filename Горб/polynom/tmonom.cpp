@@ -1,5 +1,7 @@
 #include "tmonom.h"
 
+//user methods:
+
 TMonom::TMonom()
 {
 	consta = 1;
@@ -11,7 +13,8 @@ TMonom::TMonom(int _c, int _i)
 	consta = _c;
 	if (_i<-1 || _i>OVER_IND) throw ("Overdrive: Index is out of range.");
 	else index = _i;
-}
+};
+
 TMonom TMonom::GetCopy() const
 {
 	return *this;
@@ -36,6 +39,8 @@ void TMonom::SetIndex(const int _i)
 	if (_i<-1 || _i>OVER_IND) throw ("Overdrive: Index is out of range.");
 	else index = _i;
 };
+
+//overload operators:
 
 TMonom& TMonom::operator=(const TMonom &_enter)
 {
@@ -77,6 +82,7 @@ TMonom TMonom::operator-(const TMonom &_enter)
 		return res;
 	}
 }
+
 TMonom TMonom::operator*(const TMonom &_enter)
 {
 	if (index == -1 || _enter.index == -1) return *this;
@@ -86,11 +92,11 @@ TMonom TMonom::operator*(const TMonom &_enter)
 	//first
 	a1 = (int)(index / 100);
 	b1 = (int)((index - a1 * 100) / 10);
-	c1 = index - a1 - b1;
+	c1 = index - a1*100 - b1*10;
 	//second
 	a2 = (int)(_enter.index / 100);
 	b2 = (int)((_enter.index - a2 * 100) / 10);
-	c2 = _enter.index - a2 - b2;
+	c2 = _enter.index - a2*100 - b2*10;
 	//result:
 	res.index = (a1 + a2) * 100 + (b1 + b2) * 10 + (c1 + c2);
 	if (res.index > 999)
@@ -114,14 +120,14 @@ TMonom TMonom::operator/(const TMonom &_enter)
 		//first
 		a1 = (int)(index / 100);
 		b1 = (int)((index - a1*100)/10);
-		c1 = index - a1 - b1;
+		c1 = index - a1*100 - b1*10;
 		//second
 		a2 = (int)(_enter.index / 100);
 		b2 = (int)((_enter.index - a2 * 100) / 10);
-		c2 = _enter.index - a2 - b2;
-		if (a1 - a2 <0) throw("Беда1");
-		if (b1 - b2 <0) throw("Беда2");
-		if (c1 - c2 <0) throw("Беда3");
+		c2 = _enter.index - a2*100 - b2*10;
+		if (a1 - a2 <0) throw("_HALT_1");
+		if (b1 - b2 <0) throw("_HALT_2");
+		if (c1 - c2 <0) throw("_HALT_3");
 		res.index=(a1 - a2)*100+(b1-b2)*10+(c1-c2);
 		res.index = index - _enter.index;
 		return res;
@@ -132,7 +138,10 @@ bool TMonom::operator==(const TMonom &_enter) const
 {
 	return (consta == _enter.consta && index == _enter.index);
 }
+
 bool TMonom::operator!=(const TMonom &_enter) const
 {
 	return !(*this == _enter);
 };
+
+//end of user methods;
